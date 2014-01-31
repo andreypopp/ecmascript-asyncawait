@@ -34,16 +34,16 @@ macro __injectAwait {
 
 let async = macro {
   rule { function $name ($params ...) { $body ...} } => {
-    var $name = require('q').async(function * $name ($params ...) { __injectAwait $body ... })
+    var $name = require('q').async(function * $name ($params ...) { __injectAwait $body ... });
   }
   rule { function ($params ...) { $body ...} } => {
-    require('q').async(function * ($params ...) { __injectAwait $body ... })
+    require('q').async(function * ($params ...) { __injectAwait $body ... });
   }
   rule { ($params ...) => $body } => {
-    require('q').async(function * ($params ...) { __injectAwait return $body; })
+    require('q').async(function * ($params ...) { __injectAwait return $body; });
   }
   rule { ($params ...) => { $body ... } } => {
-    require('q').async(function * ($params ...) { __injectAwait $body ... })
+    require('q').async(function * ($params ...) { __injectAwait $body ... });
   }
 }
 export async;
