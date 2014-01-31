@@ -1,42 +1,4 @@
-﻿// macros ----------------------------------------
-
-let async = macro {
-  case {_ function $name ($params ...) { $body ...} } => {
-    return #{ var $name = require('q').async(function * $name ($params ...) { $body ... }) }
-  }
-  case {_ function ($params ...) { $body ...} } => {
-    return #{ require('q').async(function * ($params ...) { $body ... }) }
-  }
-  case {_ ($params ...) => $body } => {
-    return #{ require('q').async(function * ($params ...) { return $body; }) }
-  }
-}
-
-macro await {
-  case {_ $e:expr } => {
-    return #{ yield $e }
-  }
-}
-
-let var = macro {
-  rule { $name:ident = $value:expr } => {
-    var $name = $value
-  }
- 
-  rule { {$name:ident (,) ...} = $value:expr } => {
-    var object = $value
-    $(, $name = object.$name) ...
-  }
- 
-  rule { [$name:ident (,) ...] = $value:expr } => {
-    var array = $value, index = 0
-    $(, $name = array[index++]) ...
-  }
-}
-
-// app ------------------------------------------------
-
-var http = require('http');
+﻿var http = require('http');
 var Q = require('q');
 var request = require('./request.js');
 var headers = { 'User-Agent': 'lukehoban', 'Authorization': 'token 3e9852ce188aa2f097a1e5dd6fbd36f73020a1d5' };
